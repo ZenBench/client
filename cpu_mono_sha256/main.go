@@ -29,6 +29,7 @@ func doUntil(doit func(), durationInMs time.Duration) {
             return
         default:
         	doit()
+fmt.Println("after doit")
         	result += 1
         }
     }
