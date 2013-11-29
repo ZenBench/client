@@ -1,0 +1,54 @@
+
+Q: What's this?
+A: It's a patch to Solar Designer's "john the ripper" password cracker.
+
+Q: What's it good for, then?
+A: It enables cracking of many different hashes. The list includes:
+	- Kerberos AFS DES
+	- Eggdrop Blowfish
+	- OpenBSD Blowfish
+	- BSDI DES
+	- Traditional DES
+	- NT LM DES
+	- Lotus V5 web password
+	- Apache MD5
+	- FreeBSD MD5
+	- MS Cache Hash
+	- MYSQL
+	- Netscape LDAP SHA
+	- NTHASH (md4)
+	- Raw MD5
+	- Raw SHA1
+	- Oracle
+
+Q: Who made this?
+A: The original patches are from the /contrib/ directory of john the ripper.
+Their respective authors are shown on the john page, except:
+	- Domino v5 by Jeff Fay
+	- mscash, raw-md5, raw-sha1, hmac-md5, oracle 
+	by Bartavelle@bandecon.com
+
+Q: How do I install it?
+A: I assume you are able to install john from a source distribution,
+   if you are not, PLEASE read john's documentation before e-mailing me. 
+   To install run 'gunzip -c john-1.6.37-bigpatch.x.ge | patch -p0' from the
+   directory containing john   and then run 'make (your-system-type-here)' to 
+   build john.
+
+Q: NT hash support is broken!
+A: NT hash support works with file whose format is:
+USERNAME:$NT$A04B60AC43771EB386B94FEBAC779BBC
+if your file looks that way:
+USERNAME:A04B60AC43771EB386B94FEBAC779BBC
+use the "-format:NT" option.
+
+Q: It doesn't work!
+A: This big patch has not been extensively tested. It should work most of the
+time on all architectures. Please send all questions to bartavelle@bandecon.com
+
+Thanks to:
+Solar Designer for john and the advises
+Arnaud Pilon for the MS Cash algorithm and the CacheDump tool
+Moof (from thinko.net) for the macintosh shell
+HP for their testdrive systems, and the fact they allow me to use john on their
+servers.

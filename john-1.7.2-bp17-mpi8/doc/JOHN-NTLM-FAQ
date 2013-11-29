@@ -1,0 +1,29 @@
+
+Q: What's this?
+A: It's a patch to Solar Designer's "john the ripper" password cracker.
+
+Q: What's it good for, then?
+A: It enables cracking of Windows NT/2000 MD4 (case-sensitive) password hashes.
+
+Q: Who made this?
+A: This patch was thrown together on a boring Sunday by Olle Segerdahl.
+   It uses Andrew Tridgell's NTLM and MD4 code stolen from samba-2.0.7 .
+
+Q: How do I install it?
+A: I assume you are able to install john from a source distribution,
+   if you are not, PLEASE read john's documentation before e-mailing me. 
+   To install run 'patch < john-ntlm-v02.diff' from the john "src" directory
+   and then run 'make (your-system-type-here)' to build john.
+
+Q: How do I use john to crack NT password hashes?
+A: Use pwdump2 or L0phtcrack to dump the password hashes into a file,
+   then run 'john pwfile -format:NT' to start cracking!
+
+Q: I get all kinds of compile errors!
+A: This patch was made against john-1.6.36, lots of stuff might have broken
+   source compatibility since then... Use something closer to john-1.6.36.
+
+Q: I have a question not covered by this FAQ!
+A: Make sure you have read all there is to read about john, then
+   mail me at olle@nxs.se with "JOHN-NTLM" in the subject.
+

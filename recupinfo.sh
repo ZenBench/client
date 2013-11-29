@@ -1,4 +1,5 @@
-#!/bin/bash -x
+#!/bin/bash
+echo $0
 LOAD=$(uptime |cut -d "," -f 3|awk '{print $3}')
 CPU_TYPE=$(cat /proc/cpuinfo  |grep "model name"|cut -d ":" -f 2|head -n 1) 
 CPU_MHZ=$(cat /proc/cpuinfo  |grep "cpu MHz" |cut -d ":" -f 2 |head -n 1)

@@ -1,6 +1,5 @@
 #!/usr/bin/php
 <?php
-
 /*****************************************************************************************
 ***************** C O N F I G ***********************
 */
@@ -21,9 +20,15 @@ $CONF_COLLECT = array(
 	'RAM_TYPE'=>'dmidecode --type 17 |grep Type: |cut -d ":" -f 2 |head -n 1',
 	'RAM_FREQ'=>'dmidecode --type 17 |grep Speed: |cut -d ":" -f 2 |sort -nk1 |head -n 1'
 );
+
+debug("1 - Collect data on machine");
+$infosystem=collectstat($CONF_COLLECT);
+$NB_CPU=$infosystem['CPU_NB'];
+$PWD=getcwd();
+
 $CONF_ROUTINE = array(
-	'CPU_SHA256' => '/root/zenbench_infosrv/zenbench_go_cpu_mono_sha256 -o #OUTPUT#' //,
-	//'CPU_MULTISHA1'=>'echo 2 > #OUTPUT#'
+//	'CPU_SHA256' => '/root/zenbench_infosrv/zenbench_go_cpu_mono_sha256 -o #OUTPUT#'
+	'CPU_WPAPSK_JOHN'=>$PWD.'/john-1.7.2-bp17-mpi8/run.sh '.intval(1 + $NB_CPU * 2).' #OUTPUT#'
 );
 
 $JSON_TEMPLATE='{
@@ -41,9 +46,6 @@ $JSON_TEMPLATE='{
 /*********************************************************************
 ************* MAIN *****************
 */
-debug("1 - Collect data on machine");
-
-$infosystem=collectstat($CONF_COLLECT);
 debug($infosystem);
 debug("2 - Run benchmarks ");
 $result=run_routines($CONF_ROUTINE);
@@ -97,9 +99,10 @@ function run_routines($routine){
 		$r=0;
 		$file=mktmp();
 		$c=str_replace('#OUTPUT#',$file,$c);
+		debug("Execute : $c");
 		debug(exec($c));
 		if(file_exists($file)){
-			$r=intval(extract_result($file)) /1000;
+			$r=intval(extract_result($file));
 			rmtmp($file);
 			$result[$k]=intval($r);
 		}		

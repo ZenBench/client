@@ -1,0 +1,11 @@
+This distribution of John the Ripper (1.6.36) requires MPI to compile.
+
+If you don't have MPI, download and install it before proceeeding.
+
+Any bugs, patches, comments or love letters should be sent to
+jtr-mpi@hash.ryanlim.com. Hate mail, death threates should be sent to
+/dev/null.
+
+Enjoy.
+--
+Ryan Lim <jtr-mpi@hash.ryanlim.com>

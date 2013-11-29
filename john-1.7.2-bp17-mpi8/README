@@ -1,0 +1,9 @@
+To compile and run:
+
+	cd src/
+	make
+	make <TARGET FROM LIST>
+	cd ../run
+	mpirun -np <NUMPROCS> ./john -test
+	mpirun -np <NUMPROCS> ./john <normal args, eg -incremental:all /etc/passwd>
+
