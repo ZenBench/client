@@ -28,8 +28,8 @@ $PWD=getcwd();
 
 $CONF_ROUTINE = array(
 	'CPU_SHA256_MONO' => $PWD.'/cpu_mono_sha256/main -d 10s -o #OUTPUT#',
-	'CPU_MULTICORE_SHA256' => $PWD.'/cpu_multi_sha256/main -t '.intval(1 + $NB_CPU *2 ).' -d 10s -o #OUTPUT#',
-	'CPU_WPAPSK_JOHN' => $PWD.'/john-1.7.2-bp17-mpi8/run.sh '.intval(1 + $NB_CPU * 2).' #OUTPUT#'
+	'CPU_MULTICORE_SHA256' => $PWD.'/cpu_multi_sha256/main -t '.intval(1 + $NB_CPU *2 ).' -d 10s -o #OUTPUT#'//,
+//	'CPU_WPAPSK_JOHN' => $PWD.'/john-1.7.2-bp17-mpi8/run.sh '.intval(1 + $NB_CPU * 2).' #OUTPUT#'
 );
 
 $JSON_TEMPLATE='{
