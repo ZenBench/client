@@ -5,11 +5,11 @@
 ***************** C O N F I G ***********************
 */
 define('DEBUG',true);
-define('POSTURL','http://127.0.0.1:9000/onsaitpas');
+define('POSTURL','http://zenbench.znx.fr/runs');
 $CONF_COLLECT = array(
  //'STAT => 'CMD'
 	'&HOSTNAME&'=>'hostname -f',
-	'CPU_LOAD' => "uptime |cut -d \",\" -f 3|awk '{print $3}'",
+	'CPU_LOAD' => "cat /proc/loadavg |awk '{print $1}'",
 	'CPU_TYPE'=>'cat /proc/cpuinfo  |grep "model name"|cut -d ":" -f 2|head -n 1',
 	'CPU_MHZ'=>'cat /proc/cpuinfo  |grep "cpu MHz" |cut -d ":" -f 2 |head -n 1',
 	'CPU_MHZ_2'=>'dmidecode -s processor-frequency|head -n 1',
@@ -22,8 +22,8 @@ $CONF_COLLECT = array(
 	'RAM_FREQ'=>'dmidecode --type 17 |grep Speed: |cut -d ":" -f 2 |sort -nk1 |head -n 1'
 );
 $CONF_ROUTINE = array(
-	'CPU_SHA1' => '/root/zenbench_infosrv/zenbench_go_cpu_mono_sha256 -o #OUTPUT#',
-	'CPU_MULTISHA1'=>'echo 2 > #OUTPUT#'
+	'CPU_SHA256' => '/root/zenbench_infosrv/zenbench_go_cpu_mono_sha256 -o #OUTPUT#' //,
+	//'CPU_MULTISHA1'=>'echo 2 > #OUTPUT#'
 );
 
 $JSON_TEMPLATE='{
@@ -50,13 +50,14 @@ $result=run_routines($CONF_ROUTINE);
 debug("3 - PostData");
 $json=make_json($JSON_TEMPLATE,$infosystem,$result);
 debug($json);
-post_data('POSTURL',$json);
+post_data(POSTURL,$json);
 /*******************************************************************
 ******** F U N C T I O N S
 */
 function post_data($url,$json){
 	//curl ici
         $CMD="curl -XPOST '".$url."' -H 'Content-type: application/json' --data-binary '".$json."'";
+	echo $CMD;
 	debug(exec($CMD));
 }
 function make_json($j,$sys,$result){
@@ -98,9 +99,9 @@ function run_routines($routine){
 		$c=str_replace('#OUTPUT#',$file,$c);
 		debug(exec($c));
 		if(file_exists($file)){
-			$r=intval(extract_result($file));
+			$r=intval(extract_result($file)) /1000;
 			rmtmp($file);
-			$result[$k]=$r;
+			$result[$k]=intval($r);
 		}		
 	}
 	return ($result);
