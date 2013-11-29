@@ -8,31 +8,30 @@ import (
 //    "io"
 //    "os/exec"
     "flag"
-    "strconv"
-    "crypto/sha1"
+//    "strconv"
+    "crypto/sha256"
     "encoding/base64"
 //    "sync"
 )
 
-var channel = make(chan int)
-var hasher = sha1.New()
+var channel = make(chan uint32)
+var hasher = sha256.New()
 var bv = []byte("chboing")
 
 func doUntil(doit func(), durationInMs time.Duration) {
-	result := 0
-    stop   := time.After(durationInMs * time.Millisecond)
-    for {
-        select {
-        case <-stop:
-            fmt.Println("Stopping!")
-            channel <- result
-            return
-        default:
-        	doit()
-fmt.Println("after doit")
-        	result += 1
-        }
+	result := uint32(0)
+  stop   := time.After(durationInMs)
+  for {
+    select {
+      case <-stop:
+          fmt.Println("Stopping!")
+          channel <- result
+          return
+      default:
+      	doit()
+        result += 1
     }
+  }
 }
 
 
@@ -51,19 +50,24 @@ func writeLines(lines []string, path string) error {
 }
 
 func main() {
-    outputFile := flag.String("o", "out.txt", "the output file")
+  defaultDuration, _ := time.ParseDuration("1000ms")
+  outputFile := flag.String("o", "out.txt", "the output file")
+  duration := flag.Duration("d", defaultDuration, "the duration")
 
-    flag.Parse()
+  flag.Parse()
 
-    go doUntil(func() {
+  fmt.Printf("SHA256 bench: CPU Mono - duration %v\n", *duration)
+
+  go doUntil(func() {
 		hasher.Write(bv)
-	}, 10000)
+	}, *duration)
 
-    result := <-channel
+  nb := <-channel
 
-    hash := base64.URLEncoding.EncodeToString(hasher.Sum(nil))
+  base64.URLEncoding.EncodeToString(hasher.Sum(nil))
 
-    writeLines([]string{ strconv.Itoa(result), hash }, *outputFile)
+  fmt.Printf("Total computed: %d \n", nb)
 
+  writeLines([]string{fmt.Sprintf("%d", nb)}, *outputFile)
 }
 
