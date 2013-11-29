@@ -9,7 +9,7 @@ define('POSTURL','http://zenbench.znx.fr/runs');
 $CONF_COLLECT = array(
  //'STAT => 'CMD'
 	'&HOSTNAME&'=>'hostname -f',
-	'CPU_LOAD' => "uptime |cut -d \",\" -f 3|awk '{print $3}'",
+	'CPU_LOAD' => "cat /proc/loadavg |awk '{print $1}'",
 	'CPU_TYPE'=>'cat /proc/cpuinfo  |grep "model name"|cut -d ":" -f 2|head -n 1',
 	'CPU_MHZ'=>'cat /proc/cpuinfo  |grep "cpu MHz" |cut -d ":" -f 2 |head -n 1',
 	'CPU_MHZ_2'=>'dmidecode -s processor-frequency|head -n 1',
